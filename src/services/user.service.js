@@ -6,6 +6,6 @@ function getUser() {
   }
 }
 
-export const contactService = {
+export const userService = {
   getUser
 }
