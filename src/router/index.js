@@ -1,5 +1,5 @@
 import React from 'react'
-import { createHashRouter } from 'react-router-dom'
+import { createHashRouter, useLocation, useNavigate, useParams, } from 'react-router-dom'
 
 import Root from '../Root'
 import HomePage from '../pages/HomePage'
@@ -36,5 +36,22 @@ const router = createHashRouter([
     ]
   }
 ])
+
+export function withRouter(Component) {
+  function ComponentWithRouterProp(props) {
+    let location = useLocation()
+    let navigate = useNavigate()
+    let params = useParams()
+
+    return (
+      <Component
+        {...props}
+        router={{ location, navigate, params }}
+      />
+    )
+  }
+
+  return ComponentWithRouterProp
+}
 
 export default router
