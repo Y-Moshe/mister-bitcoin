@@ -1,8 +1,15 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Navbar, NavbarGroup, Alignment, Button } from '@blueprintjs/core'
 
 export default function AppHeader() {
+  const location = useLocation()
+
+  function isNavActive(path) {
+    const currentPath = location.pathname
+    return currentPath === path
+  }
+
   return (
     <header className='main-header main-layout full'>
       {/* <Navbar className='full'> */}
@@ -14,21 +21,33 @@ export default function AppHeader() {
 
 
         <NavbarGroup align={Alignment.RIGHT} className='nav-list'>
-          <NavLink to={'/home'}>
-            <Button className='bp4-minimal' icon="home" text="Home" />
-          </NavLink>
+          <Link to={'/home'}>
+            <Button
+              className='bp4-minimal'
+              icon="home"
+              text="Home"
+              active={isNavActive('/home')} />
+          </Link>
 
           <Navbar.Divider />
 
-          <NavLink to={'/contacts'}>
-            <Button className='bp4-minimal' icon="id-number" text="Contacts" />
-          </NavLink>
+          <Link to={'/contact'}>
+            <Button
+              className='bp4-minimal'
+              icon="id-number"
+              text="Contacts"
+              active={isNavActive('/contact')} />
+          </Link>
 
           <Navbar.Divider />
 
-          <NavLink to={'/charts'}>
-            <Button className='bp4-minimal' icon="timeline-bar-chart" text="Charts" />
-          </NavLink>
+          <Link to={'/chart'}>
+            <Button
+              className='bp4-minimal'
+              icon="timeline-bar-chart"
+              text="Charts"
+              active={isNavActive('/chart')} />
+          </Link>
         </NavbarGroup>
 
       </Navbar>
