@@ -6,7 +6,7 @@ import HomePage from '../pages/HomePage'
 import ContactPage from '../pages/ContactPage'
 import ContactDetailsPage from '../pages/ContactDetailsPage'
 import ContactEditPage from '../pages/ContactEditPage'
-import ChartPage from '../pages/ChartPage'
+import StatisticPage from '../pages/StatisticPage'
 
 const router = createHashRouter([
   {
@@ -30,8 +30,8 @@ const router = createHashRouter([
         element: <ContactEditPage />
       },
       {
-        path: 'chart',
-        element: <ChartPage />
+        path: 'statistic',
+        element: <StatisticPage />
       }
     ]
   }

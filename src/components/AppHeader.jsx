@@ -41,11 +41,11 @@ export default function AppHeader() {
 
           <Navbar.Divider />
 
-          <Link to={'/chart'}>
+          <Link to={'/statistic'}>
             <Button
               className='bp4-minimal'
               icon="timeline-bar-chart"
-              text="Charts"
+              text="Statistics"
               active={isNavActive('/chart')} />
           </Link>
         </NavbarGroup>
