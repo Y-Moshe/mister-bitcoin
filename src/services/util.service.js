@@ -1,34 +1,6 @@
-export const utilService = {
-    makeId,
-    makeLorem,
-    getRandomIntInclusive,
-    getRandomMonth,
-    debounce,
-    randomPastTime,
-    saveToStorage,
-    loadFromStorage,
-    deepCopy
-}
-
-const month = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-]
-
 function makeId(length = 6) {
     var txt = ''
-    var possible =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
     for (var i = 0; i < length; i++) {
         txt += possible.charAt(Math.floor(Math.random() * possible.length))
@@ -39,38 +11,17 @@ function makeId(length = 6) {
 
 function makeLorem(size = 100) {
     var words = [
-        'The sky',
-        'above',
-        'the port',
-        'was',
-        'the color of television',
-        'tuned',
-        'to',
-        'a dead channel',
-        '.',
-        'All',
-        'this happened',
-        'more or less',
-        '.',
-        'I',
-        'had',
-        'the story',
-        'bit by bit',
-        'from various people',
-        'and',
-        'as generally',
-        'happens',
-        'in such cases',
-        'each time',
-        'it',
-        'was',
-        'a different story',
-        '.',
-        'It',
-        'was',
-        'a pleasure',
-        'to',
-        'burn',
+        'The sky', 'above', 'the port',
+        'was', 'the color of television', 'tuned',
+        'to', 'a dead channel', '.',
+        'All', 'this happened', 'more or less',
+        '.', 'I', 'had',
+        'the story', 'bit by bit', 'from various people',
+        'and', 'as generally', 'happens',
+        'in such cases', 'each time', 'it',
+        'was', 'a different story', '.',
+        'It', 'was', 'a pleasure',
+        'to', 'burn',
     ]
     var txt = ''
     while (size > 0) {
@@ -83,20 +34,7 @@ function makeLorem(size = 100) {
 function getRandomIntInclusive(min, max) {
     min = Math.ceil(min)
     max = Math.floor(max)
-    return Math.floor(Math.random() * (max - min + 1)) + min //The maximum is inclusive and the minimum is inclusive
-}
-
-function getRandomMonth() {
-    return month[getRandomIntInclusive(0, 11)]
-}
-
-function randomPastTime() {
-    const HOUR = 1000 * 60 * 60
-    const DAY = 1000 * 60 * 60 * 24
-    const WEEK = 1000 * 60 * 60 * 24 * 7
-
-    const pastTime = getRandomIntInclusive(HOUR, WEEK)
-    return Date.now() - pastTime
+    return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 function debounce(func, timeout = 300) {
@@ -118,6 +56,16 @@ function loadFromStorage(key) {
     return data ? JSON.parse(data) : undefined
 }
 
-function deepCopy(any) {
+function deepClone(any) {
     return JSON.parse(JSON.stringify(any))
+}
+
+export const utilService = {
+    makeId,
+    makeLorem,
+    getRandomIntInclusive,
+    debounce,
+    saveToStorage,
+    loadFromStorage,
+    deepCopy: deepClone
 }
