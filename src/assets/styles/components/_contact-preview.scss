@@ -1,0 +1,15 @@
+.contact-preview {
+  display: flex;
+  align-items: center;
+  column-gap: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $clr1;
+  }
+
+  & img {
+    width: 56px;
+    height: auto;
+  }
+}
