@@ -10,3 +10,9 @@
         grid-column: 2;
     }
 }
+
+.take-full-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
