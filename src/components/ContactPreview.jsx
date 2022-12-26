@@ -6,7 +6,7 @@ export default function ContactPreview({ contact }) {
   return (
     <Link to={'/contact/' + contact._id}>
       <article className='contact-preview'>
-        <img src={profileImg} alt="profile img" />
+        <img src={profileImg} alt="profile img" className='img-size-56' />
         {contact.name}
       </article>
     </Link>

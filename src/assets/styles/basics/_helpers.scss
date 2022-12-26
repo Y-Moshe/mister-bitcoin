@@ -70,3 +70,26 @@
     margin: 0;
     padding: 0;
 }
+
+
+.img-size {
+    &-56 {
+        width: 56px;
+        height: auto;
+    }
+
+    &-96 {
+        width: 96px;
+        height: auto;
+    }
+
+    &-256 {
+        width: 256px;
+        height: auto;
+    }
+
+    &-512 {
+        width: 512px;
+        height: auto;
+    }
+}
