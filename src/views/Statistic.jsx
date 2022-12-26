@@ -6,8 +6,8 @@ import Chart from '../components/Chart'
 
 export default class Statistic extends Component {
   state = {
-    marketChartData: [],
-    transactionsChartData: []
+    marketChartData: null,
+    transactionsChartData: null
   }
 
   componentDidMount() {
@@ -16,38 +16,46 @@ export default class Statistic extends Component {
   }
 
   loadMarketChart = async () => {
-    const { values } = await bitcoinService.getMarketPrice()
+    const response = await bitcoinService.getMarketPrice()
 
-    const data = values.map(({ x, y }) => {
+    response.values = response.values.map(({ x, y }) => {
       return {
         month: moment(new Date(x * 1000)).format('MMM DD'),
         USD: y
       }
-    })
+    }).slice(0, 10)
 
-    setTimeout(() => this.setState({ marketChartData: data }), 1000)
+    this.setState({ marketChartData: response })
   }
 
   loadTransactionsChart = async () => {
-    const { values } = await bitcoinService.getConfirmedTransactions()
+    const response = await bitcoinService.getConfirmedTransactions()
 
-    const data = values.map(({ x, y }) => {
+    response.values = response.values.map(({ x, y }) => {
       return {
         month: moment(new Date(x * 1000)).format('MMM DD'),
         BIT: y
       }
-    })
+    }).slice(0, 150)
 
-    setTimeout(() => this.setState({ transactionsChartData: data }), 1000)
+    this.setState({ transactionsChartData: response })
   }
 
   render() {
     const { marketChartData, transactionsChartData } = this.state
 
     return (
-      <div>
-        <Chart type="marketPrice" data={marketChartData} />
-        <Chart type="transactions" data={transactionsChartData} />
+      <div className='flex column justify-center align-center'>
+        <Chart
+          type="marketPrice"
+          title={marketChartData?.name}
+          description={marketChartData?.description}
+          data={marketChartData?.values} />
+        <Chart
+          type="transactions"
+          title={transactionsChartData?.name}
+          description={transactionsChartData?.description}
+          data={transactionsChartData?.values} />
       </div>
     )
   }
