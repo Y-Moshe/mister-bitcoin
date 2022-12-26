@@ -1,3 +1,5 @@
+import { utilService } from './util.service'
+
 const contacts = [
     {
         "_id": "5a56640269f443a5d64b32ca",
@@ -116,6 +118,8 @@ const contacts = [
     }
 ];
 
+const SLEEP_MS = 1000
+
 function sort(arr) {
     return arr.sort((a, b) => {
         if (a.name.toLocaleLowerCase() < b.name.toLocaleLowerCase()) {
@@ -129,50 +133,49 @@ function sort(arr) {
     })
 }
 
-function getContacts(filterBy = null) {
-    return new Promise((resolve, reject) => {
-        var contactsToReturn = contacts;
-        if (filterBy && filterBy.term) {
-            contactsToReturn = filter(filterBy.term)
-        }
-        resolve(sort(contactsToReturn))
-    })
+async function getContacts(filterBy = null) {
+    await utilService.sleep(SLEEP_MS)
+
+    var contactsToReturn = contacts;
+    if (filterBy && filterBy.term) {
+        contactsToReturn = filter(filterBy.term)
+    }
+
+    return sort(contactsToReturn)
 }
 
-function getContactById(id) {
-    return new Promise((resolve, reject) => {
-        const contact = contacts.find(contact => contact._id === id)
-        contact ? resolve(contact) : reject(`Contact id ${id} not found!`)
-    })
+async function getContactById(id) {
+    await utilService.sleep(SLEEP_MS)
+
+    const contact = contacts.find(contact => contact._id === id)
+    if (contact) return contact
+    else return `Contact id ${id} not found!`
 }
 
-function deleteContact(id) {
-    return new Promise((resolve, reject) => {
-        const index = contacts.findIndex(contact => contact._id === id)
-        if (index !== -1) {
-            contacts.splice(index, 1)
-        }
+async function deleteContact(id) {
+    await utilService.sleep(SLEEP_MS)
 
-        resolve(contacts)
-    })
+    const index = contacts.findIndex(contact => contact._id === id)
+    if (index !== -1) contacts.splice(index, 1)
+
+    return contacts
 }
 
-function _updateContact(contact) {
-    return new Promise((resolve, reject) => {
-        const index = contacts.findIndex(c => contact._id === c._id)
-        if (index !== -1) {
-            contacts[index] = contact
-        }
-        resolve(contact)
-    })
+async function _updateContact(contact) {
+    await utilService.sleep(SLEEP_MS)
+
+    const index = contacts.findIndex(c => contact._id === c._id)
+    if (index !== -1) contacts[index] = contact
+
+    return contact
 }
 
-function _addContact(contact) {
-    return new Promise((resolve, reject) => {
-        contact._id = _makeId()
-        contacts.push(contact)
-        resolve(contact)
-    })
+async function _addContact(contact) {
+    await utilService.sleep(SLEEP_MS)
+
+    contact._id = _makeId()
+    contacts.push(contact)
+    return contact
 }
 
 function saveContact(contact) {

@@ -60,7 +60,12 @@ function deepClone(any) {
     return JSON.parse(JSON.stringify(any))
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 export const utilService = {
+    sleep,
     makeId,
     makeLorem,
     getRandomIntInclusive,
