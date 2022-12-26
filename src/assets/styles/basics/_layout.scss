@@ -4,7 +4,7 @@
 
 .main-layout {
     display: grid;
-    grid-template-columns: auto 1280px auto;
+    grid-template-columns: auto minmax(auto, 1280px) auto;
 
     & > *:not(.full) {
         grid-column: 2;
