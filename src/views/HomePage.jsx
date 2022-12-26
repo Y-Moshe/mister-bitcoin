@@ -3,6 +3,7 @@ import { Icon, Spinner } from '@blueprintjs/core'
 
 import { userService } from '../services/user.service'
 import { bitcoinService } from '../services/bitcoin.service'
+import profileImg from '../assets/img/profile.png'
 
 export default class HomePage extends Component {
   state = {
@@ -25,10 +26,13 @@ export default class HomePage extends Component {
     const { user, BTCRate } = this.state
     if (!user) return <Spinner intent='primary' />
     return (
-      <div>
-        <h1>Hello {user.name}</h1>
-        <p><Icon icon='dollar' /> {user.coins}</p>
-        <p>BTC: {BTCRate}</p>
+      <div className='flex'>
+        <article className='m-auto'>
+          <img src={profileImg} alt='profile img' className='img-size-256' />
+          <h1>Hello {user.name}</h1>
+          <p><Icon icon='dollar' /> {user.coins}</p>
+          <p>BTC: {BTCRate}</p>
+        </article>
       </div>
     )
   }

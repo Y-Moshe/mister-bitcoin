@@ -6,11 +6,13 @@ import AppHeader from './components/AppHeader'
 
 function Root() {
   return (
-    <div className="main-layout">
+    <div className="main-layout take-full-screen">
       <AppHeader />
-      <Switch>
-        { routes }
-      </Switch>
+      <main className='flex-grow'>
+        <Switch>
+          { routes }
+        </Switch>
+      </main>
       <footer>Footer</footer>
     </div>
   );
