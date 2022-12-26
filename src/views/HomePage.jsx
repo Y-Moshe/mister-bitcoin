@@ -19,7 +19,6 @@ export default class HomePage extends Component {
   setBTCRate = async (coins) => {
     const rate = await bitcoinService.getRate(coins)
     this.setState({ BTCRate: rate })
-    console.log(rate);
   }
 
   render() {
