@@ -59,6 +59,7 @@ export default class ContactEdit extends Component {
         <form onSubmit={this.handleSubmit}>
           <FormGroup label='Name'>
             <InputGroup
+              intent='primary'
               disabled={isLoading}
               name='name'
               placeholder='Type a name'
@@ -69,6 +70,8 @@ export default class ContactEdit extends Component {
 
           <FormGroup label='E-Mail'>
             <InputGroup
+              intent='primary'
+              type='email'
               disabled={isLoading}
               name='email'
               placeholder='Type email'
@@ -79,6 +82,7 @@ export default class ContactEdit extends Component {
 
           <FormGroup label='Phone'>
             <InputGroup
+              intent='primary'
               disabled={isLoading}
               name='phone'
               placeholder='Type phone number'
