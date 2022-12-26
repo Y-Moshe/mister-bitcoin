@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/mister-bitcoin/static/css/main.b6d179d7.css",
+    "main.js": "/mister-bitcoin/static/js/main.74ff0e10.js",
+    "static/js/787.887c022c.chunk.js": "/mister-bitcoin/static/js/787.887c022c.chunk.js",
+    "static/media/blueprint-icons-20.eot?": "/mister-bitcoin/static/media/blueprint-icons-20.d317d8e9664636080ad2.eot",
+    "static/media/blueprint-icons-20.ttf?": "/mister-bitcoin/static/media/blueprint-icons-20.c6dea603c58a0bcb5512.ttf",
+    "static/media/blueprint-icons-16.eot?": "/mister-bitcoin/static/media/blueprint-icons-16.4c64ca9bc9382d8efa79.eot",
+    "static/media/blueprint-icons-16.ttf?": "/mister-bitcoin/static/media/blueprint-icons-16.f0580acd64437597aef0.ttf",
+    "static/media/blueprint-icons-20.woff?": "/mister-bitcoin/static/media/blueprint-icons-20.4fa4ec6a6fab211c90e6.woff",
+    "static/media/blueprint-icons-16.woff?": "/mister-bitcoin/static/media/blueprint-icons-16.3e75e0c04e6091d48f69.woff",
+    "static/media/blueprint-icons-20.woff2?": "/mister-bitcoin/static/media/blueprint-icons-20.8bee0c372f0cf4399089.woff2",
+    "static/media/blueprint-icons-16.woff2?": "/mister-bitcoin/static/media/blueprint-icons-16.f81c5e3e118a3659abda.woff2",
+    "static/media/profile.png": "/mister-bitcoin/static/media/profile.169ae305737812617ba9.png",
+    "index.html": "/mister-bitcoin/index.html",
+    "main.b6d179d7.css.map": "/mister-bitcoin/static/css/main.b6d179d7.css.map",
+    "main.74ff0e10.js.map": "/mister-bitcoin/static/js/main.74ff0e10.js.map",
+    "787.887c022c.chunk.js.map": "/mister-bitcoin/static/js/787.887c022c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b6d179d7.css",
+    "static/js/main.74ff0e10.js"
+  ]
+}
