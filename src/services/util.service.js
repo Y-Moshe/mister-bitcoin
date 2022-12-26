@@ -72,5 +72,5 @@ export const utilService = {
     debounce,
     saveToStorage,
     loadFromStorage,
-    deepCopy: deepClone
+    deepClone
 }
