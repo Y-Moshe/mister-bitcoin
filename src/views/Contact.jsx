@@ -21,8 +21,15 @@ export default class Contact extends Component {
   }
 
   loadContacts = async () => {
-    const contacts = await contactService.getContacts(this.state.filterBy)
-    this.setState({ contacts, isLoading: false })
+    this.setState({ isLoading: true })
+    try {
+      const contacts = await contactService.getContacts(this.state.filterBy)
+      this.setState({ contacts })
+    } catch (err) {
+      console.log(err)
+    } finally {
+      this.setState({ isLoading: false })
+    }
   }
 
   handleSearchChange = utilService.debounce((filterBy) => {
