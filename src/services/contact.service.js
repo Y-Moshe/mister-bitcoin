@@ -137,8 +137,8 @@ async function getContacts(filterBy = null) {
     await utilService.sleep(SLEEP_MS)
 
     var contactsToReturn = contacts;
-    if (filterBy && filterBy.term) {
-        contactsToReturn = filter(filterBy.term)
+    if (filterBy && filterBy.text) {
+        contactsToReturn = filter(filterBy.text)
     }
 
     return sort(contactsToReturn)
@@ -190,12 +190,12 @@ function getEmptyContact() {
     }
 }
 
-function filter(term) {
-    term = term.toLocaleLowerCase()
+function filter(text) {
+    text = text.toLocaleLowerCase()
     return contacts.filter(contact => {
-        return contact.name.toLocaleLowerCase().includes(term) ||
-            contact.phone.toLocaleLowerCase().includes(term) ||
-            contact.email.toLocaleLowerCase().includes(term)
+        return contact.name.toLocaleLowerCase().includes(text) ||
+               contact.phone.toLocaleLowerCase().includes(text) ||
+               contact.email.toLocaleLowerCase().includes(text)
     })
 }
 
