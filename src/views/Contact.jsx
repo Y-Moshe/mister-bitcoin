@@ -23,7 +23,8 @@ export default class Contact extends Component {
   loadContacts = async () => {
     this.setState({ isLoading: true })
     try {
-      const contacts = await contactService.getContacts(this.state.filterBy)
+      const data = await contactService.getContacts(this.state.filterBy)
+      const contacts = data.map(_ => ({ ..._, isLoading: false })) // add isLoading state to delete case
       this.setState({ contacts })
     } catch (err) {
       console.log(err)
@@ -42,6 +43,30 @@ export default class Contact extends Component {
     }), () => this.loadContacts())
   }, 500)
 
+  removeContact = (contactId) => {
+    this.setState(({ contacts }) => ({
+      contacts: contacts.filter(({ _id }) => _id !== contactId)
+    }))
+  }
+
+  setContactLoading = (contactId, loadingState) => {
+    const idx = this.state.contacts.findIndex(({ _id }) => _id === contactId)
+    const contacts = [...this.state.contacts]
+    contacts[idx] = { ...contacts[idx], isLoading: loadingState }
+    this.setState(({ contacts }))
+  }
+
+  handleContactRemove = async (contactId) => {
+    this.setContactLoading(contactId, true)
+    try {
+      await contactService.deleteContact(contactId)
+      this.removeContact(contactId)
+    } catch (err) {
+      console.log(err)
+      this.setContactLoading(contactId, false)
+    }
+  }
+
   render() {
     const { contacts, filterBy, isLoading } = this.state
 
@@ -52,7 +77,7 @@ export default class Contact extends Component {
           onChange={this.handleSearchChange}
           loading={isLoading}
         />
-        <ContactList contacts={contacts}>
+        <ContactList contacts={contacts} onRemove={this.handleContactRemove}>
           <li>
             <Link to={'/contact/edit'}>
               <section className='contact-preview'>
