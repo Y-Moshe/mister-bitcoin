@@ -10,7 +10,7 @@ export default function Chart({ title, description, data, color, type }) {
       <LineChart width={730} height={300} data={data}>
         <XAxis dataKey="month" />
         <YAxis dataKey="BIT" />
-        <Tooltip formatter={(value, name) => [`${value}`, name]} />
+        <Tooltip formatter={(value, name) => [`${value.toFixed(7)}`, name]} />
         <Legend />
         <Line type="monotone" dataKey="BIT" stroke="#8884d8" />
       </LineChart>
