@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Spinner, Button, ButtonGroup } from '@blueprintjs/core'
+import { Spinner, Button, ButtonGroup, Alert } from '@blueprintjs/core'
 
 import { contactService } from '../services/contact.service'
 
 export default class ContactDetails extends Component {
   state = {
-    contact: null
+    contact: null,
+    isAlertOpen: false,
+    isLoading: false
   }
 
   componentDidMount() {
@@ -20,12 +22,19 @@ export default class ContactDetails extends Component {
   }
 
   handleContactRemove = async () => {
-    await contactService.deleteContact(this.state.contact._id)
-    this.props.history.replace('/contact') // so going back is not an option!
+    this.setState({ isLoading: true })
+    try {
+      await contactService.deleteContact(this.state.contact._id)
+      this.props.history.replace('/contact') // so going back is not an option!
+    } catch (err) {
+      console.log(err)
+    } finally {
+      this.setState({ isLoading: false })
+    }
   }
 
   render() {
-    const { contact } = this.state
+    const { contact, isAlertOpen, isLoading } = this.state
     if (!contact) return <Spinner intent='primary' />
 
     return (
@@ -42,12 +51,26 @@ export default class ContactDetails extends Component {
           </Link>
 
           <ButtonGroup>
-            <Button icon='trash' intent='danger' onClick={this.handleContactRemove} />
+            <Button icon='trash' intent='danger' onClick={() => this.setState({ isAlertOpen: true })}>Delete</Button>
             <Link to={`/contact/edit/${contact._id}`}>
-              <Button icon='edit' intent='warning' />
+              <Button icon='edit' intent='warning'>Edit</Button>
             </Link>
           </ButtonGroup>
         </section>
+
+        <Alert
+          isOpen={isAlertOpen}
+          loading={isLoading}
+          intent='danger'
+          icon='trash'
+          onConfirm={this.handleContactRemove}
+          confirmButtonText='Yes'
+          cancelButtonText='No'
+          onCancel={() => this.setState({ isAlertOpen: false })}
+          canOutsideClickCancel
+        >
+          <p>Are you sure to delete this?</p>
+        </Alert>
       </section>
     )
   }
