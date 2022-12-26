@@ -1,12 +1,10 @@
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { Navbar, NavbarGroup, Alignment, Button } from '@blueprintjs/core'
 
-export default function AppHeader() {
-  const location = useLocation()
-
+function AppHeader(props) {
   function isNavActive(path) {
-    const currentPath = location.pathname
+    const currentPath = props.location.pathname
     return currentPath === path
   }
 
@@ -54,3 +52,5 @@ export default function AppHeader() {
     </header>
   )
 }
+
+export default withRouter(AppHeader)

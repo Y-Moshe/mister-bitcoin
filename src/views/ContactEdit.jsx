@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
 import { Spinner, FormGroup, InputGroup, Button } from '@blueprintjs/core'
 
-import { withRouter } from '../router'
+
 import { contactService } from '../services/contact.service'
 
-class ContactDetails extends Component {
+export default class ContactEdit extends Component {
   state = {
     contact: null
   }
   contactId = null
 
   componentDidMount() {
-    this.contactId = this.props.router.params.id
+    console.log(this.props);
+    this.contactId = this.props.match.params.id
     this.loadContact()
   }
 
@@ -75,5 +76,3 @@ class ContactDetails extends Component {
     )
   }
 }
-
-export default withRouter(ContactDetails)

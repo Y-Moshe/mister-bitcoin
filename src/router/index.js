@@ -1,57 +1,20 @@
 import React from 'react'
-import { createHashRouter, useLocation, useNavigate, useParams, } from 'react-router-dom'
+import { v4 as uuid } from 'uuid'
+import { Route, Redirect } from 'react-router-dom'
 
-import Root from '../Root'
-import HomePage from '../pages/HomePage'
-import ContactPage from '../pages/ContactPage'
-import ContactDetailsPage from '../pages/ContactDetailsPage'
-import ContactEditPage from '../pages/ContactEditPage'
-import StatisticPage from '../pages/StatisticPage'
+import HomePage from '../views/HomePage'
+import ContactPage from '../views/Contact'
+import ContactDetails from '../views/ContactDetails'
+import ContactEdit from '../views/ContactEdit'
+import StatisticPage from '../views/Statistic'
 
-const router = createHashRouter([
-  {
-    path: '/',
-    element: <Root />,
-    children: [
-      {
-        path: 'home',
-        element: <HomePage />
-      },
-      {
-        path: 'contact',
-        element: <ContactPage />
-      },
-      {
-        path: 'contact/:id',
-        element: <ContactDetailsPage />
-      },
-      {
-        path: 'contact/edit/:id?',
-        element: <ContactEditPage />
-      },
-      {
-        path: 'statistic',
-        element: <StatisticPage />
-      }
-    ]
-  }
-])
+const routes = [
+  <Route key={uuid()} path={'/'} render={() => <Redirect to={'/home'} />} />,
+  <Route key={uuid()} path={'/home'} component={HomePage} />,
+  <Route key={uuid()} path={'/contact'} component={ContactPage} exact />,
+  <Route key={uuid()} path={'/contact/:id'} component={ContactDetails} exact />,
+  <Route key={uuid()} path={'/contact/edit/:id?'} component={ContactEdit} />,
+  <Route key={uuid()} path={'/statistic'} component={StatisticPage} />,
+]
 
-export function withRouter(Component) {
-  function ComponentWithRouterProp(props) {
-    let location = useLocation()
-    let navigate = useNavigate()
-    let params = useParams()
-
-    return (
-      <Component
-        {...props}
-        router={{ location, navigate, params }}
-      />
-    )
-  }
-
-  return ComponentWithRouterProp
-}
-
-export default router
+export default routes

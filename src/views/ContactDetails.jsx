@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { Spinner } from '@blueprintjs/core'
 
-import { withRouter } from '../router'
 import { contactService } from '../services/contact.service'
 
-class ContactDetails extends Component {
+export default class ContactDetails extends Component {
   state = {
     contact: null
   }
@@ -14,7 +13,7 @@ class ContactDetails extends Component {
   }
   
   loadContact = async () => {
-    const id = this.props.router.params.id
+    const id = this.props.match.params.id
     const contact = await contactService.getContactById(id)
     this.setState({ contact })
   }
@@ -32,5 +31,3 @@ class ContactDetails extends Component {
     )
   }
 }
-
-export default withRouter(ContactDetails)

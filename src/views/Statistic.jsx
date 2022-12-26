@@ -4,7 +4,7 @@ import moment from 'moment'
 import { bitcoinService } from '../services/bitcoin.service'
 import Chart from '../components/Chart'
 
-export default class StatisticPage extends Component {
+export default class Statistic extends Component {
   state = {
     marketChartData: [],
     transactionsChartData: []

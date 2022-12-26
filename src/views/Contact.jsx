@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { contactService } from '../services/contact.service'
 import ContactList from '../components/ContactList'
 
-export default class ContactPage extends Component {
+export default class Contact extends Component {
   state = {
     contacts: []
   }
