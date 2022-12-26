@@ -1,24 +1,31 @@
 import React, { Component } from 'react'
-import { Spinner, FormGroup, InputGroup, Button } from '@blueprintjs/core'
-
+import { Link } from 'react-router-dom'
+import { FormGroup, InputGroup, Button } from '@blueprintjs/core'
 
 import { contactService } from '../services/contact.service'
 
 export default class ContactEdit extends Component {
   state = {
-    contact: null
+    contact: contactService.getEmptyContact(),
+    isLoading: false
   }
   contactId = null
 
   componentDidMount() {
-    console.log(this.props);
     this.contactId = this.props.match.params.id
-    this.loadContact()
+    this.contactId && this.loadContact()
   }
 
   loadContact = async () => {
-    const contact = await contactService.getContactById(this.contactId)
-    this.setState({ contact })
+    this.setState({ isLoading: true })
+    try {
+      const contact = await contactService.getContactById(this.contactId)
+      this.setState({ contact })
+    } catch (err) {
+      console.log(err)
+    } finally {
+      this.setState({ isLoading: false })
+    }
   }
 
   handleChange = (event) => {
@@ -31,20 +38,28 @@ export default class ContactEdit extends Component {
     }))
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault()
-    console.log(this.state.contact)
+
+    this.setState({ isLoading: true })
+    try {
+      await contactService.saveContact(this.state.contact)
+      this.props.history.push('/contact')
+    } catch (err) {
+      console.log(err)
+    } finally {
+      this.setState({ isLoading: false })
+    }
   }
 
   render() {
-    const { contact } = this.state
-    if (!contact) return <Spinner intent='primary' />
-
+    const { contact, isLoading } = this.state
     return (
       <section>
         <form onSubmit={this.handleSubmit}>
           <FormGroup label='Name'>
             <InputGroup
+              disabled={isLoading}
               name='name'
               placeholder='Type a name'
               value={contact.name}
@@ -54,6 +69,7 @@ export default class ContactEdit extends Component {
 
           <FormGroup label='E-Mail'>
             <InputGroup
+              disabled={isLoading}
               name='email'
               placeholder='Type email'
               value={contact.email}
@@ -63,6 +79,7 @@ export default class ContactEdit extends Component {
 
           <FormGroup label='Phone'>
             <InputGroup
+              disabled={isLoading}
               name='phone'
               placeholder='Type phone number'
               value={contact.phone}
@@ -70,7 +87,18 @@ export default class ContactEdit extends Component {
             />
           </FormGroup>
 
-          <Button type='submit' intent='success'>Save</Button>
+          <section className='flex justify-between'>
+            <Link to={'/contact'} replace>
+              <Button icon='arrow-left' intent='primary' disabled={isLoading} />
+            </Link>
+            <Button
+              style={{ width: 200 }}
+              type='submit'
+              intent='success'
+              disabled={isLoading}
+              loading={isLoading}>Save
+            </Button>
+          </section>
         </form>
       </section>
     )
