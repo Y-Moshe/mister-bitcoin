@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import {
   Navbar, NavbarGroup, Alignment,
@@ -10,6 +11,7 @@ import { Popover2 as Popover } from '@blueprintjs/popover2'
 import MediaQuery from 'react-responsive'
 
 import BitcoinIcon from './Icons/BitcoinIcon'
+import { logoutUser } from '../store/actions/user.actions'
 
 const links = [
   {
@@ -47,8 +49,15 @@ class AppHeader extends Component {
   openUserNav = () => this.setState({ isUserNavOpen: true })
   closeUserNav = () => this.setState({ isUserNavOpen: false })
 
+  handleLogout = () => {
+    this.props.logoutUser()
+    this.props.history.replace('/signup')
+  }
+
   render() {
     const { isUserNavOpen, isDark } = this.state
+    const isLoggedIn = this.props.loggedInUser
+    const userName = this.props.loggedInUser?.name || ''
 
     return (
       <header className='main-header main-layout full'>
@@ -59,7 +68,7 @@ class AppHeader extends Component {
             <Navbar.Heading className='flex align-center gap-5'><BitcoinIcon />Mister-bitcoin</Navbar.Heading>
           </NavbarGroup>
 
-          <NavbarGroup align={Alignment.RIGHT} className='gap-5'>
+          { isLoggedIn && <NavbarGroup align={Alignment.RIGHT} className='gap-5'>
             <MediaQuery minWidth={568}>
               {
                 links.map(link => (
@@ -80,9 +89,11 @@ class AppHeader extends Component {
             <Popover
               isOpen={isUserNavOpen}
               content={UserNav({
+                userName,
                 isDark,
                 history: this.props.history,
                 onDarkModeChange: this.handleDarkModeChange,
+                onLogout: this.handleLogout,
                 isNavActive: this.isNavActive
               })}
               position={Position.BOTTOM_RIGHT}
@@ -92,14 +103,14 @@ class AppHeader extends Component {
               <Button minimal icon='cog' onClick={this.openUserNav} />
             </Popover>
 
-          </NavbarGroup>
+          </NavbarGroup>}
         </Navbar>
       </header>
     )
   }
 }
 
-function UserNav({ isDark, onDarkModeChange, history, isNavActive }) {
+function UserNav({ userName, isDark, onDarkModeChange, history, isNavActive, onLogout }) {
   const darkIcon = <Icon icon='contrast' color={isDark ? 'darkblue' : 'gold'} />
   const darkSwitch = <Switch checked={isDark} onChange={onDarkModeChange} style={{ margin: 0 }} />
 
@@ -124,12 +135,20 @@ function UserNav({ isDark, onDarkModeChange, history, isNavActive }) {
         <MenuDivider />
       </MediaQuery>
 
-      <MenuItem icon='user' text='Profile' />
+      <MenuItem icon='user' text={userName} onClick={() => history.push('/home')} />
       <MenuItem icon={darkIcon} text={darkSwitch} />
       <MenuDivider />
-      <MenuItem icon='log-out' text='Log-out' intent='danger' />
+      <MenuItem icon='log-out' text='Log-out' intent='danger' onClick={onLogout} />
     </Menu>
   )
 }
 
-export default withRouter(AppHeader)
+const mapStateToProps = ({ userModule }) => ({
+  loggedInUser: userModule.loggedInUser
+})
+
+const mapDispatchToProps = {
+  logoutUser
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppHeader))

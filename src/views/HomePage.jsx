@@ -1,19 +1,21 @@
 import React, { Component } from 'react'
-import { Icon, Spinner } from '@blueprintjs/core'
+import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { Icon } from '@blueprintjs/core'
 
-import { userService } from '../services/user.service'
 import { bitcoinService } from '../services/bitcoin.service'
 import profileImg from '../assets/img/profile.png'
 
-export default class HomePage extends Component {
+class HomePage extends Component {
   state = {
-    user: null,
     BTCRate: 0
   }
 
   componentDidMount() {
-    const user = userService.getUser()
-    this.setState({ user }, () => this.setBTCRate(user.coins))
+    if (this.props.loggedInUser) {
+      const { coins } = this.props.loggedInUser
+      this.setBTCRate(coins)
+    }
   }
 
   setBTCRate = async (coins) => {
@@ -22,8 +24,10 @@ export default class HomePage extends Component {
   }
 
   render() {
-    const { user, BTCRate } = this.state
-    if (!user) return <Spinner intent='primary' />
+    const user = this.props.loggedInUser
+    const { BTCRate } = this.state
+    if (!user) return <Redirect to='/signup' />
+
     return (
       <div className='flex'>
         <article className='m-auto'>
@@ -36,3 +40,9 @@ export default class HomePage extends Component {
     )
   }
 }
+
+const mapStateToProps = ({ userModule }) => ({
+  loggedInUser: userModule.loggedInUser
+})
+
+export default connect(mapStateToProps)(HomePage)
