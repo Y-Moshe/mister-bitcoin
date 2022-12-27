@@ -1,0 +1,10 @@
+.signup-page {
+  width: 100%;
+  
+  @media (min-width: 968px) {
+    & {
+      margin-inline: auto;
+      width: 50%;
+    }
+  }
+}
