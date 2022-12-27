@@ -52,8 +52,8 @@ class AppHeader extends Component {
 
     return (
       <header className='main-header main-layout full'>
-        {/* <Navbar className='full'> */}
-        <Navbar>
+        <Navbar className='full'>
+        {/* <Navbar> */}
 
           <NavbarGroup align={Alignment.LEFT}>
             <Navbar.Heading className='flex align-center gap-5'><BitcoinIcon />Mister-bitcoin</Navbar.Heading>
