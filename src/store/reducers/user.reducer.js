@@ -1,24 +1,22 @@
 import { ACTIONS } from '../actions/user.actions'
 
 const INITIAL_STATE = {
-  loggedInUser: {
-    name: "Ochoa Hyde",
-    coins: 100,
-    moves: []
-  }
+  loggedInUser: null
 }
 
 export function userReducer(state = INITIAL_STATE, action) {
 
   switch (action.type) {
     case ACTIONS.SET_USER:
-      const { loggedInUser } = state
+    case ACTIONS.SIGNUP_USER:
       return {
         ...state,
-        loggedInUser: {
-          ...loggedInUser,
-          ...action.user
-        }
+        loggedInUser: { ...action.user }
+      }
+    case ACTIONS.LOGOUT_USER:
+      return {
+        ...state,
+        loggedInUser: null
       }
 
     default:

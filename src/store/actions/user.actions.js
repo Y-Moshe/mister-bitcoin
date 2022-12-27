@@ -1,24 +1,28 @@
+import { userService } from '../../services/user.service'
+
 export const ACTIONS = {
-  SET_USER: 'SET_USER'
+  SET_USER: 'SET_USER',
+  LOGOUT_USER: 'LOGOUT_USER',
+  SIGNUP_USER: 'SIGNUP_USER'
 }
 
 export function setUser(user) {
 
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({ type: ACTIONS.SET_USER, user })
   }
 }
+export function logoutUser() {
 
-// export function loginUser(username, password) {
+  return (dispatch) => {
+    userService.logout()
+    dispatch({ type: ACTIONS.LOGOUT_USER, user: null })
+  }
+}
+export function signupUser(name) {
 
-//   return async (dispatch) => {
-//     dispatch({ type: 'LOGIN_USER', user })
-//   }
-// }
-
-// export function signupUser(user) {
-
-//   return async (dispatch) => {
-//     dispatch({ type: 'SIGNUP_USER', user })
-//   }
-// }
+  return (dispatch) => {
+    const user = userService.signup(name)
+    dispatch({ type: ACTIONS.SIGNUP_USER, user })
+  }
+}
