@@ -26,3 +26,11 @@ export function signupUser(name) {
     dispatch({ type: ACTIONS.SIGNUP_USER, user })
   }
 }
+
+export function transferCoins(to, coins) {
+
+  return (dispatch) => {
+    const user = userService.addMove(to, coins)
+    dispatch({ type: ACTIONS.SET_USER, user })
+  }
+}

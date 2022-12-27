@@ -29,13 +29,16 @@ function logout() {
 function addMove(contact, amount) {
   const user = getLoggedInUser()
   if (user) {
-    user.moves.push({
+    user.coins -= amount
+    user.moves.unshift({
       contact,
       amount,
       at: Date.now()
     })
     saveUser(user)
   }
+
+  return user
 }
 
 function saveUser(user) {

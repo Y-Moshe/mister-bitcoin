@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Spinner, Button, ButtonGroup, Alert } from '@blueprintjs/core'
 
 import { contactService } from '../services/contact.service'
+import TransferFund from '../components/TransferFund'
+import { transferCoins } from '../store/actions/user.actions'
 
-export default class ContactDetails extends Component {
+class ContactDetails extends Component {
   state = {
     contact: null,
     isAlertOpen: false,
@@ -33,16 +36,24 @@ export default class ContactDetails extends Component {
     }
   }
 
+  handleTransferCoins = (coins) => {
+    if (this.props.loggedInUser.coins < coins) return // TODO Display error message of no money available
+    this.props.transferCoins(this.state.contact, coins)
+  }
+
   render() {
     const { contact, isAlertOpen, isLoading } = this.state
     if (!contact) return <Spinner intent='primary' />
+    const { coins: maxCoins } = this.props.loggedInUser
 
     return (
-      <section>
+      <section style={{ maxWidth: 650, marginInline: 'auto' }}>
         <div>
           <h4>Name: {contact.name}</h4>
           <p>E-Mail: {contact.email}</p>
           <p>Phone: {contact.phone}</p>
+
+          <TransferFund maxCoins={maxCoins} onTransferCoins={this.handleTransferCoins} />
         </div>
 
         <section className='flex justify-between'>
@@ -75,3 +86,13 @@ export default class ContactDetails extends Component {
     )
   }
 }
+
+const mapStateToProps = ({ userModule }) => ({
+  loggedInUser: userModule.loggedInUser
+})
+
+const mapDispatchToProps = {
+  transferCoins
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactDetails)
