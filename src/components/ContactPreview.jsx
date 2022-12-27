@@ -5,8 +5,6 @@ import { ButtonGroup, Button } from '@blueprintjs/core'
 import profileImg from '../assets/img/profile.png'
 
 function ContactPreview({ contact, onRemove, history }) {
-  console.log(contact.isLoading);
-
   const handleDelete = (event) => {
     event.preventDefault()
     onRemove(contact._id)
