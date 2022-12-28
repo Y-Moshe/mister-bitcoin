@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Icon, Button } from '@blueprintjs/core'
@@ -11,68 +11,64 @@ import {
   setFilterBy, saveContact, setContactLoading
 } from '../store/actions/contact.actions'
 
-class Contact extends Component {
-  state = {
-    isLoading: true
-  }
+function Contact(props) {
+  const [isLoading, setIsLoading] = useState(true)
 
-  componentDidMount() {
-    this.loadContacts()
-  }
+  useEffect(() => {
+    loadContacts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  loadContacts = async () => {
-    this.setState({ isLoading: true })
+  const loadContacts = async () => {
+    setIsLoading(true)
     try {
-      await this.props.loadContacts()
+      await props.loadContacts()
     } catch (err) {
       console.log(err)
     } finally {
-      this.setState({ isLoading: false })
+      setIsLoading(false)
     }
   }
 
-  handleSearchChange = utilService.debounce((filterBy) => {
-    this.props.setFilterBy(filterBy)
-    this.loadContacts()
+  const handleSearchChange = utilService.debounce((filterBy) => {
+    props.setFilterBy(filterBy)
+    loadContacts()
   }, 500)
 
-  handleContactRemove = async (contactId) => {
-    this.props.setContactLoading(contactId, true)
+  const handleContactRemove = async (contactId) => {
+    props.setContactLoading(contactId, true)
     try {
-      await this.props.removeContact(contactId)
+      await props.removeContact(contactId)
     } catch (err) {
       console.log(err)
-      this.props.setContactLoading(contactId, false)
+      props.setContactLoading(contactId, false)
     }
   }
 
-  render() {
-    const { contacts, filterBy } = this.props
-    const { isLoading } = this.state
+  const { contacts, filterBy } = props
 
-    return (
-      <div>
-        <ContactFilter
-          filterBy={filterBy}
-          onChange={this.handleSearchChange}
-          loading={isLoading}
-        />
-        <ContactList contacts={contacts} onRemove={this.handleContactRemove}>
-          <li>
-            <Link to={'/contact/edit'}>
-              <section className='contact-preview'>
-                <span></span>
-                <Button intent='success' large fill minimal>
-                  <Icon icon='id-number' size={28} />
-                  <Icon icon='plus' size={28} />
-                </Button>
-              </section>
-            </Link>
-          </li>
-        </ContactList>
-      </div>
-    )
-  }
+  return (
+    <div>
+      <ContactFilter
+        filterBy={filterBy}
+        onChange={handleSearchChange}
+        loading={isLoading}
+      />
+      <ContactList contacts={contacts} onRemove={handleContactRemove}>
+        <li>
+          <Link to={'/contact/edit'}>
+            <section className='contact-preview'>
+              <span></span>
+              <Button intent='success' large fill minimal>
+                <Icon icon='id-number' size={28} />
+                <Icon icon='plus' size={28} />
+              </Button>
+            </section>
+          </Link>
+        </li>
+      </ContactList>
+    </div>
+  )
 }
 
 const mapStateToProps = ({ contactModule }) => ({

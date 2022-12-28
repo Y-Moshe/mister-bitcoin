@@ -1,62 +1,54 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import moment from 'moment'
 
 import { bitcoinService } from '../services/bitcoin.service'
 import Chart from '../components/Chart'
 
-export default class Statistic extends Component {
-  state = {
-    marketChartData: null,
-    transactionsChartData: null
-  }
+export default function Statistic() {
+  const [marketChartData, setMarketChartData] = useState(null)
+  const [transactionsChartData, setTransactionsChartData] = useState(null)
 
-  componentDidMount() {
-    this.loadMarketChart()
-    this.loadTransactionsChart()
-  }
+  useEffect(() => {
+    loadMarketChart()
+    loadTransactionsChart()
+  }, [])
 
-  loadMarketChart = async () => {
-    const response = await bitcoinService.getMarketPrice()
-
-    response.values = response.values.map(({ x, y }) => {
+  const loadMarketChart = async () => {
+    const data = await bitcoinService.getMarketPrice()
+    data.values = data.values.map(({ x, y }) => {
       return {
         month: moment(new Date(x * 1000)).format('MMM DD'),
         USD: y
       }
     }).slice(0, 10)
 
-    this.setState({ marketChartData: response })
+    setMarketChartData(data)
   }
 
-  loadTransactionsChart = async () => {
-    const response = await bitcoinService.getConfirmedTransactions()
-
-    response.values = response.values.map(({ x, y }) => {
+  const loadTransactionsChart = async () => {
+    const data = await bitcoinService.getConfirmedTransactions()
+    data.values = data.values.map(({ x, y }) => {
       return {
         month: moment(new Date(x * 1000)).format('MMM DD'),
         BIT: y
       }
     }).slice(0, 150)
 
-    this.setState({ transactionsChartData: response })
+    setTransactionsChartData(data)
   }
 
-  render() {
-    const { marketChartData, transactionsChartData } = this.state
-
-    return (
-      <div className='flex column justify-center align-center'>
-        <Chart
-          type="marketPrice"
-          title={marketChartData?.name}
-          description={marketChartData?.description}
-          data={marketChartData?.values} />
-        <Chart
-          type="transactions"
-          title={transactionsChartData?.name}
-          description={transactionsChartData?.description}
-          data={transactionsChartData?.values} />
-      </div>
-    )
-  }
+  return (
+    <div className='flex column justify-center align-center'>
+      <Chart
+        type="marketPrice"
+        title={marketChartData?.name}
+        description={marketChartData?.description}
+        data={marketChartData?.values} />
+      <Chart
+        type="transactions"
+        title={transactionsChartData?.name}
+        description={transactionsChartData?.description}
+        data={transactionsChartData?.values} />
+    </div>
+  )
 }
