@@ -5,6 +5,7 @@ import { Icon } from '@blueprintjs/core'
 
 import { bitcoinService } from '../services/bitcoin.service'
 import profileImg from '../assets/img/profile.png'
+import MoveList from '../components/MoveList'
 
 class HomePage extends Component {
   state = {
@@ -28,6 +29,8 @@ class HomePage extends Component {
     const { BTCRate } = this.state
     if (!user) return <Redirect to='/signup' />
 
+    const last3Moves = user.moves.slice(0, 3)
+
     return (
       <div className='flex'>
         <article className='m-auto'>
@@ -36,6 +39,7 @@ class HomePage extends Component {
           <p><Icon icon='dollar' /> {user.coins}</p>
           <p>BTC: {BTCRate}</p>
         </article>
+        <MoveList title='Your last 3 transfers' moves={last3Moves} renderTo />
       </div>
     )
   }

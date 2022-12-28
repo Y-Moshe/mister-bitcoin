@@ -6,6 +6,7 @@ import { Spinner, Button, ButtonGroup, Alert } from '@blueprintjs/core'
 import { contactService } from '../services/contact.service'
 import TransferFund from '../components/TransferFund'
 import { transferCoins } from '../store/actions/user.actions'
+import MoveList from '../components/MoveList'
 
 class ContactDetails extends Component {
   state = {
@@ -44,7 +45,9 @@ class ContactDetails extends Component {
   render() {
     const { contact, isAlertOpen, isLoading } = this.state
     if (!contact) return <Spinner intent='primary' />
-    const { coins: maxCoins } = this.props.loggedInUser
+    const { coins: maxCoins, moves } = this.props.loggedInUser
+
+    const contactMoves = moves.filter(move => move.contact._id === contact._id)
 
     return (
       <section style={{ maxWidth: 650, marginInline: 'auto' }}>
@@ -68,6 +71,8 @@ class ContactDetails extends Component {
             </Link>
           </ButtonGroup>
         </section>
+
+        <MoveList title='Transfer history' moves={contactMoves} />
 
         <Alert
           isOpen={isAlertOpen}

@@ -3,33 +3,33 @@ import { FormGroup, InputGroup, Button } from '@blueprintjs/core'
 
 export default class TransferFund extends Component {
   state = {
-    ammount: 0,
+    amount: 0,
     isSubmitted: false
   }
 
   handleChange = ({ target }) => {
-    this.setState({ ammount: +target.value })
+    this.setState({ amount: +target.value })
   }
 
   handleSubmit = async (event) => {
     event.preventDefault()
     this.setState({ isSubmitted: true })
-    this.props.onTransferCoins(this.state.ammount)
+    this.props.onTransferCoins(this.state.amount)
   }
 
   render() {
     return (
       <form onSubmit={this.handleSubmit} className='transfer-fund'>
-        <FormGroup label='Enter ammount to transfer'>
+        <FormGroup label='Enter amount to transfer'>
           <InputGroup
             fill
             type='number'
             intent='warning'
-            name='ammount'
+            name='amount'
             min={1}
             max={this.props.maxCoins}
-            placeholder='Ammount'
-            value={this.state.ammount}
+            placeholder='Amount'
+            value={this.state.amount}
             onChange={this.handleChange}
           />
 
