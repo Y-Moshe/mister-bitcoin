@@ -38,7 +38,6 @@ class ContactDetails extends Component {
   }
 
   handleTransferCoins = (coins) => {
-    if (this.props.loggedInUser.coins < coins) return // TODO Display error message of no money available
     this.props.transferCoins(this.state.contact, coins)
   }
 
@@ -52,9 +51,11 @@ class ContactDetails extends Component {
     return (
       <section style={{ maxWidth: 650, marginInline: 'auto' }}>
         <div>
-          <h4>Name: {contact.name}</h4>
-          <p>E-Mail: {contact.email}</p>
-          <p>Phone: {contact.phone}</p>
+          <pre>
+            <h4>Name: {contact.name}</h4>
+            <p>E-Mail: {contact.email}</p>
+            <p>Phone: {contact.phone}</p>
+          </pre>
 
           <TransferFund maxCoins={maxCoins} onTransferCoins={this.handleTransferCoins} />
         </div>
