@@ -1,0 +1,12 @@
+.move-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  & .move-preview {
+    background-color: #8ABBFF;
+    border-radius: 5px;
+    box-shadow: 0 0 0 1px #4C90F0;
+    padding: 5px 10px;
+  }
+}

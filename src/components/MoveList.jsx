@@ -7,7 +7,7 @@ export default function MoveList({ title, moves, renderTo }) {
       { moves.length > 0 && <h3>{title}</h3>}
       {
         moves.map(({ contact, amount, at }) => (
-          <article key={at}>
+          <article className='move-preview' key={at}>
             { renderTo && <p>To: {contact.name}</p> }
             <p>{moment(new Date(at)).fromNow()}</p>
             <p>Amount: {amount}</p>
