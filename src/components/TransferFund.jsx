@@ -4,7 +4,7 @@ import { FormGroup, InputGroup, Button } from '@blueprintjs/core'
 export default class TransferFund extends Component {
   state = {
     amount: 0,
-    isSubmitted: false
+    isLoading: false
   }
 
   handleChange = ({ target }) => {
@@ -13,8 +13,11 @@ export default class TransferFund extends Component {
 
   handleSubmit = async (event) => {
     event.preventDefault()
-    this.setState({ isSubmitted: true })
-    this.props.onTransferCoins(this.state.amount)
+    this.setState({ isLoading: true })
+    setTimeout(() => {
+      this.props.onTransferCoins(this.state.amount)
+      this.setState({ isLoading: false })
+    }, 1000)
   }
 
   render() {
@@ -34,7 +37,7 @@ export default class TransferFund extends Component {
           />
 
           <div className="flex flex-end">
-            <Button type='submit' intent='warning' disabled={this.state.isSubmitted} outlined>Transfer</Button>
+            <Button type='submit' intent='warning' loading={this.state.isLoading} outlined>Transfer</Button>
           </div>
         </FormGroup>
       </form>
