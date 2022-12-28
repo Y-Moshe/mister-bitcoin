@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
+import moment from 'moment'
 import { Icon } from '@blueprintjs/core'
 
 import { bitcoinService } from '../services/bitcoin.service'
 import profileImg from '../assets/img/profile.png'
 import MoveList from '../components/MoveList'
+import Chart from '../components/Chart'
 
 class HomePage extends Component {
   state = {
@@ -24,6 +26,16 @@ class HomePage extends Component {
     this.setState({ BTCRate: rate })
   }
 
+  getTransfersChartData = () => {
+    return this.props.loggedInUser.moves.map(({ amount, at, contact }) => {
+      return {
+        month: moment(new Date(at)).format('DD/MM hh:mm'),
+        coins: amount,
+        contactName: contact.name
+      }
+    })
+  }
+
   render() {
     const user = this.props.loggedInUser
     const { BTCRate } = this.state
@@ -32,14 +44,19 @@ class HomePage extends Component {
     const last3Moves = user.moves.slice(0, 3)
 
     return (
-      <div className='flex'>
-        <article className='m-auto'>
+      <div className='home-page'>
+        <article className='text-center'>
           <img src={profileImg} alt='profile img' className='img-size-256' />
           <h1>Hello {user.name}</h1>
           <p><Icon icon='dollar' /> {user.coins}</p>
           <p>BTC: {BTCRate}</p>
         </article>
         <MoveList title='Your last 3 transfers' moves={last3Moves} renderTo />
+        <Chart
+          title='Your transfers'
+          type='transfers'
+          data={this.getTransfersChartData()}
+        />
       </div>
     )
   }
