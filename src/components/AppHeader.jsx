@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import {
@@ -31,83 +31,75 @@ const links = [
   }
 ]
 
-class AppHeader extends Component {
-  state = {
-    isUserNavOpen: false,
-    isDark: false
-  }
+function AppHeader(props) {
+  const [isUserNavOpen, setIsUserNavOpen] = useState(false)
+  const [isDark, setIsDark] = useState(false)
 
-  isNavActive = (path) => {
-    const currentPath = this.props.location.pathname
+  const isNavActive = (path) => {
+    const currentPath = props.location.pathname
     return currentPath === path
   }
 
-  handleDarkModeChange = ({ target }) => {
-    this.setState({ isDark: target.checked })
+  const handleDarkModeChange = ({ target }) => setIsDark(target.checked)
+  const openUserNav = () => setIsUserNavOpen(true)
+  const closeUserNav = () => setIsUserNavOpen(false)
+
+  const handleLogout = () => {
+    props.logoutUser()
+    props.history.replace('/signup')
   }
 
-  openUserNav = () => this.setState({ isUserNavOpen: true })
-  closeUserNav = () => this.setState({ isUserNavOpen: false })
+  const isLoggedIn = props.loggedInUser
+  const userName = props.loggedInUser?.name || ''
 
-  handleLogout = () => {
-    this.props.logoutUser()
-    this.props.history.replace('/signup')
-  }
+  return (
+    <header className='main-header main-layout full'>
+      <Navbar className='full'>
+      {/* <Navbar> */}
 
-  render() {
-    const { isUserNavOpen, isDark } = this.state
-    const isLoggedIn = this.props.loggedInUser
-    const userName = this.props.loggedInUser?.name || ''
+        <NavbarGroup align={Alignment.LEFT}>
+          <Navbar.Heading className='flex align-center gap-5'><BitcoinIcon />Mister-bitcoin</Navbar.Heading>
+        </NavbarGroup>
 
-    return (
-      <header className='main-header main-layout full'>
-        <Navbar className='full'>
-        {/* <Navbar> */}
+        { isLoggedIn && <NavbarGroup align={Alignment.RIGHT} className='gap-5'>
+          <MediaQuery minWidth={568}>
+            {
+              links.map(link => (
+                <Link to={link.href} key={link.text}>
+                  <Button
+                    minimal
+                    icon={link.icon}
+                    text={link.text}
+                    active={isNavActive(link.href)}
+                  />
+                </Link>
+              ))
+            }
+          </MediaQuery>
 
-          <NavbarGroup align={Alignment.LEFT}>
-            <Navbar.Heading className='flex align-center gap-5'><BitcoinIcon />Mister-bitcoin</Navbar.Heading>
-          </NavbarGroup>
+          <Navbar.Divider />
 
-          { isLoggedIn && <NavbarGroup align={Alignment.RIGHT} className='gap-5'>
-            <MediaQuery minWidth={568}>
-              {
-                links.map(link => (
-                  <Link to={link.href} key={link.text}>
-                    <Button
-                      minimal
-                      icon={link.icon}
-                      text={link.text}
-                      active={this.isNavActive(link.href)}
-                    />
-                  </Link>
-                ))
-              }
-            </MediaQuery>
+          <Popover
+            isOpen={isUserNavOpen}
+            content={UserNav({
+              userName,
+              isDark,
+              history: props.history,
+              onDarkModeChange: handleDarkModeChange,
+              onLogout: handleLogout,
+              isNavActive: isNavActive
+            })}
+            position={Position.BOTTOM_RIGHT}
+            onClose={closeUserNav}
+            interactionKind='hover'
+            onInteraction={openUserNav}>
+            <Button minimal icon='cog' onClick={openUserNav} />
+          </Popover>
 
-            <Navbar.Divider />
-
-            <Popover
-              isOpen={isUserNavOpen}
-              content={UserNav({
-                userName,
-                isDark,
-                history: this.props.history,
-                onDarkModeChange: this.handleDarkModeChange,
-                onLogout: this.handleLogout,
-                isNavActive: this.isNavActive
-              })}
-              position={Position.BOTTOM_RIGHT}
-              onClose={this.closeUserNav}
-              interactionKind='hover'
-              onInteraction={this.openUserNav}>
-              <Button minimal icon='cog' onClick={this.openUserNav} />
-            </Popover>
-
-          </NavbarGroup>}
-        </Navbar>
-      </header>
-    )
-  }
+        </NavbarGroup>}
+      </Navbar>
+    </header>
+  )
 }
 
 function UserNav({ userName, isDark, onDarkModeChange, history, isNavActive, onLogout }) {
