@@ -57,6 +57,23 @@ export default function Chart({ title, description, data, color, type }) {
         </ComposedChart>
       )
       break;
+    case 'transfers':
+      chartToRender = (
+        <LineChart
+          width={size.width}
+          height={size.height}
+          data={data}>
+          <XAxis dataKey="month" />
+          <YAxis dataKey="coins" />
+          <Tooltip
+            labelFormatter={(_, data) => data[0]?.payload?.contactName || ''}
+            formatter={(value, name) => [`${value.toFixed(2)}`, name.charAt(0).toUpperCase() + name.slice(1)]}
+            animationEasing='ease-out'
+          />
+          <Line type="monotone" dataKey="coins" stroke={color} />
+        </LineChart>
+      )
+      break;
 
     default:
       chartToRender = null
