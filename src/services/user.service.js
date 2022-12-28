@@ -31,6 +31,7 @@ function addMove(contact, amount) {
   if (user) {
     user.coins -= amount
     user.moves.unshift({
+      _id: utilService.makeId(),
       contact,
       amount,
       at: Date.now()
