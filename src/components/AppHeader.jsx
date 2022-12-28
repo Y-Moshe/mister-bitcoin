@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, withRouter } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import {
   Navbar, NavbarGroup, Alignment,
   Button, Position, Menu,
@@ -31,15 +31,18 @@ const links = [
   }
 ]
 
-function AppHeader(props) {
+export default function AppHeader() {
   const [isUserNavOpen, setIsUserNavOpen] = useState(false)
   const [isDark, setIsDark] = useState(false)
+
+  const location = useLocation()
+  const history = useHistory()
 
   const { loggedInUser } = useSelector(({ userModule }) => userModule)
   const dispatch = useDispatch()
 
   const isNavActive = (path) => {
-    const currentPath = props.location.pathname
+    const currentPath = location.pathname
     return currentPath === path
   }
 
@@ -49,7 +52,7 @@ function AppHeader(props) {
 
   const handleLogout = () => {
     dispatch(logoutUser())
-    props.history.replace('/signup')
+    history.replace('/signup')
   }
 
   const userName = loggedInUser?.name || ''
@@ -86,7 +89,7 @@ function AppHeader(props) {
             content={UserNav({
               userName,
               isDark,
-              history: props.history,
+              history,
               onDarkModeChange: handleDarkModeChange,
               onLogout: handleLogout,
               isNavActive: isNavActive
@@ -136,5 +139,3 @@ function UserNav({ userName, isDark, onDarkModeChange, history, isNavActive, onL
     </Menu>
   )
 }
-
-export default withRouter(AppHeader)

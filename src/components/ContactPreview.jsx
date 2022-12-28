@@ -1,10 +1,12 @@
 import React from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { ButtonGroup, Button } from '@blueprintjs/core'
 
 import profileImg from '../assets/img/profile.png'
 
-function ContactPreview({ contact, onRemove, history }) {
+export default function ContactPreview({ contact, onRemove }) {
+  const history = useHistory()
+
   const handleDelete = (event) => {
     event.preventDefault()
     onRemove(contact._id)
@@ -38,5 +40,3 @@ function ContactPreview({ contact, onRemove, history }) {
     </Link>
   )
 }
-
-export default withRouter(ContactPreview)
