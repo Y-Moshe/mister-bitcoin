@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import {
   Navbar, NavbarGroup, Alignment,
@@ -35,6 +35,9 @@ function AppHeader(props) {
   const [isUserNavOpen, setIsUserNavOpen] = useState(false)
   const [isDark, setIsDark] = useState(false)
 
+  const { loggedInUser } = useSelector(({ userModule }) => userModule)
+  const dispatch = useDispatch()
+
   const isNavActive = (path) => {
     const currentPath = props.location.pathname
     return currentPath === path
@@ -45,12 +48,11 @@ function AppHeader(props) {
   const closeUserNav = () => setIsUserNavOpen(false)
 
   const handleLogout = () => {
-    props.logoutUser()
+    dispatch(logoutUser())
     props.history.replace('/signup')
   }
 
-  const isLoggedIn = props.loggedInUser
-  const userName = props.loggedInUser?.name || ''
+  const userName = loggedInUser?.name || ''
 
   return (
     <header className='main-header main-layout full'>
@@ -61,7 +63,7 @@ function AppHeader(props) {
           <Navbar.Heading className='flex align-center gap-5'><BitcoinIcon />Mister-bitcoin</Navbar.Heading>
         </NavbarGroup>
 
-        { isLoggedIn && <NavbarGroup align={Alignment.RIGHT} className='gap-5'>
+        { loggedInUser && <NavbarGroup align={Alignment.RIGHT} className='gap-5'>
           <MediaQuery minWidth={568}>
             {
               links.map(link => (
@@ -135,12 +137,4 @@ function UserNav({ userName, isDark, onDarkModeChange, history, isNavActive, onL
   )
 }
 
-const mapStateToProps = ({ userModule }) => ({
-  loggedInUser: userModule.loggedInUser
-})
-
-const mapDispatchToProps = {
-  logoutUser
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AppHeader))
+export default withRouter(AppHeader)

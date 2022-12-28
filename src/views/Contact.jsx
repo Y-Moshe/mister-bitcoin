@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Icon, Button } from '@blueprintjs/core'
 
@@ -7,12 +7,15 @@ import { utilService } from '../services/util.service'
 import ContactList from '../components/ContactList'
 import ContactFilter from '../components/ContactFilter'
 import {
-  loadContacts, removeContact,
-  setFilterBy, saveContact, setContactLoading
+  loadContacts as loadContactsFromStore, removeContact,
+  setFilterBy, setContactLoading
 } from '../store/actions/contact.actions'
 
-function Contact(props) {
+export default function Contact() {
   const [isLoading, setIsLoading] = useState(true)
+
+  const { contacts, filterBy } = useSelector(({ contactModule }) => contactModule)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     loadContacts()
@@ -22,7 +25,7 @@ function Contact(props) {
   const loadContacts = async () => {
     setIsLoading(true)
     try {
-      await props.loadContacts()
+      await dispatch(loadContactsFromStore())
     } catch (err) {
       console.log(err)
     } finally {
@@ -31,21 +34,19 @@ function Contact(props) {
   }
 
   const handleSearchChange = utilService.debounce((filterBy) => {
-    props.setFilterBy(filterBy)
+    dispatch(setFilterBy(filterBy))
     loadContacts()
   }, 500)
 
   const handleContactRemove = async (contactId) => {
-    props.setContactLoading(contactId, true)
+    dispatch(setContactLoading(contactId, true))
     try {
-      await props.removeContact(contactId)
+      await dispatch(removeContact(contactId))
     } catch (err) {
       console.log(err)
-      props.setContactLoading(contactId, false)
+      dispatch(setContactLoading(contactId, false))
     }
   }
-
-  const { contacts, filterBy } = props
 
   return (
     <div>
@@ -70,18 +71,3 @@ function Contact(props) {
     </div>
   )
 }
-
-const mapStateToProps = ({ contactModule }) => ({
-  contacts: contactModule.contacts,
-  filterBy: contactModule.filterBy
-})
-
-const mapDispatchToProps = {
-  loadContacts,
-  saveContact,
-  removeContact,
-  setFilterBy,
-  setContactLoading
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Contact)

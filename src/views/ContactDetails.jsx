@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Spinner, Button, ButtonGroup, Alert } from '@blueprintjs/core'
 
@@ -8,10 +8,13 @@ import TransferFund from '../components/TransferFund'
 import { transferCoins } from '../store/actions/user.actions'
 import MoveList from '../components/MoveList'
 
-function ContactDetails(props) {
+export default function ContactDetails(props) {
   const [contact, setContact] = useState(null)
   const [isAlertOpen, setIsAlertOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+  const { loggedInUser } = useSelector(({ userModule }) => userModule)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     loadContact()
@@ -36,10 +39,10 @@ function ContactDetails(props) {
     }
   }
 
-  const handleTransferCoins = (coins) => props.transferCoins(contact, coins)
+  const handleTransferCoins = (coins) => dispatch(transferCoins(contact, coins))
 
   if (!contact) return <Spinner intent='primary' />
-  const { coins: maxCoins, moves } = props.loggedInUser
+  const { coins: maxCoins, moves } = loggedInUser
 
   const contactMoves = moves.filter(move => move.contact._id === contact._id)
 
@@ -86,13 +89,3 @@ function ContactDetails(props) {
     </section>
   )
 }
-
-const mapStateToProps = ({ userModule }) => ({
-  loggedInUser: userModule.loggedInUser
-})
-
-const mapDispatchToProps = {
-  transferCoins
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactDetails)
