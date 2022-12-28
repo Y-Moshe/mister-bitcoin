@@ -4,7 +4,8 @@ import { FormGroup, InputGroup, Button } from '@blueprintjs/core'
 export default class TransferFund extends Component {
   state = {
     amount: 0,
-    isLoading: false
+    isLoading: false,
+    transferError: ''
   }
 
   handleChange = ({ target }) => {
@@ -13,24 +14,33 @@ export default class TransferFund extends Component {
 
   handleSubmit = async (event) => {
     event.preventDefault()
+    const { maxCoins } = this.props
+    const { amount } = this.state
+    if (maxCoins < amount) return this.setState({ transferError: `Can't make transfer (You own ${maxCoins}) coins!` })
+
+
     this.setState({ isLoading: true })
     setTimeout(() => {
-      this.props.onTransferCoins(this.state.amount)
-      this.setState({ isLoading: false })
+      this.props.onTransferCoins(amount)
+      this.setState({
+        isLoading: false,
+        transferError: ''
+      })
     }, 1000)
   }
 
   render() {
+    const { transferError } = this.state
     return (
       <form onSubmit={this.handleSubmit} className='transfer-fund'>
-        <FormGroup label='Enter amount to transfer'>
+        <FormGroup label='Enter amount to transfer' intent={transferError ? 'danger' : 'warning'} helperText={transferError}>
           <InputGroup
             fill
             type='number'
-            intent='warning'
+            intent={transferError ? 'danger' : 'warning'}
             name='amount'
             min={1}
-            max={this.props.maxCoins}
+            // max={this.props.maxCoins} // error is displayed instead
             placeholder='Amount'
             value={this.state.amount}
             onChange={this.handleChange}
