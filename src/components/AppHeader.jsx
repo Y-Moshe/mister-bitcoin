@@ -5,13 +5,13 @@ import {
   Navbar, NavbarGroup, Alignment,
   Button, Position, Menu,
   MenuItem, MenuDivider,
-  Switch, Icon
+  Switch, Icon, Classes
 } from '@blueprintjs/core'
 import { Popover2 as Popover } from '@blueprintjs/popover2'
 import MediaQuery from 'react-responsive'
 
 import BitcoinIcon from './Icons/BitcoinIcon'
-import { logoutUser } from '../store/actions/user.actions'
+import { logoutUser, setUserSettings } from '../store/actions/user.actions'
 
 const links = [
   {
@@ -32,41 +32,40 @@ const links = [
 ]
 
 export default function AppHeader() {
-  const [isUserNavOpen, setIsUserNavOpen] = useState(false)
-  const [isDark, setIsDark] = useState(false)
-
   const location = useLocation()
   const history = useHistory()
-
   const { loggedInUser } = useSelector(({ userModule }) => userModule)
   const dispatch = useDispatch()
 
-  const isNavActive = (path) => {
-    const currentPath = location.pathname
-    return currentPath === path
-  }
+  const [isUserNavOpen, setIsUserNavOpen] = useState(false)
 
-  const handleDarkModeChange = ({ target }) => setIsDark(target.checked)
   const openUserNav = () => setIsUserNavOpen(true)
   const closeUserNav = () => setIsUserNavOpen(false)
+  const handleDarkModeChange = ({ target }) => dispatch(setUserSettings({ isDark: target.checked }))
 
   const handleLogout = () => {
     dispatch(logoutUser())
     history.replace('/signup')
   }
 
+  const isNavActive = (path) => {
+    const currentPath = location.pathname
+    return currentPath === path
+  }
+
   const userName = loggedInUser?.name || ''
+  const isDark = loggedInUser?.settings?.isDark
 
   return (
     <header className='main-header main-layout full'>
       <Navbar className='full'>
-      {/* <Navbar> */}
+        {/* <Navbar> */}
 
         <NavbarGroup align={Alignment.LEFT}>
           <Navbar.Heading className='flex align-center gap-5'><BitcoinIcon />Mister-bitcoin</Navbar.Heading>
         </NavbarGroup>
 
-        { loggedInUser && <NavbarGroup align={Alignment.RIGHT} className='gap-5'>
+        {loggedInUser && <NavbarGroup align={Alignment.RIGHT} className='gap-5'>
           <MediaQuery minWidth={568}>
             {
               links.map(link => (
@@ -86,18 +85,18 @@ export default function AppHeader() {
 
           <Popover
             isOpen={isUserNavOpen}
+            position={Position.BOTTOM_RIGHT}
+            onClose={closeUserNav}
+            interactionKind='hover'
+            onInteraction={openUserNav}
             content={UserNav({
               userName,
               isDark,
               history,
               onDarkModeChange: handleDarkModeChange,
               onLogout: handleLogout,
-              isNavActive: isNavActive
-            })}
-            position={Position.BOTTOM_RIGHT}
-            onClose={closeUserNav}
-            interactionKind='hover'
-            onInteraction={openUserNav}>
+              isNavActive
+            })}>
             <Button minimal icon='cog' onClick={openUserNav} />
           </Popover>
 
@@ -109,7 +108,7 @@ export default function AppHeader() {
 
 function UserNav({ userName, isDark, onDarkModeChange, history, isNavActive, onLogout }) {
   const darkIcon = <Icon icon='contrast' color={isDark ? 'darkblue' : 'gold'} />
-  const darkSwitch = <Switch checked={isDark} onChange={onDarkModeChange} style={{ margin: 0 }} />
+  const darkSwitch = <Switch checked={isDark} onChange={onDarkModeChange} className={Classes.FOCUS_DISABLED + ' m-0'} />
 
   return (
     <Menu onClick={ev => ev.stopPropagation()}>
