@@ -1,31 +1,42 @@
-import { connect } from 'react-redux'
-import { Switch, Redirect } from 'react-router-dom'
+import { useEffect, useMemo } from 'react'
+import { useDispatch } from 'react-redux'
+import { Switch, useHistory } from 'react-router-dom'
 import routes from './routes'
 import './assets/styles/main.scss'
 
 import AppHeader from './components/AppHeader'
 import { userService } from './services/user.service'
 import { setUser } from './store/actions/user.actions'
+import { useSettings } from './hooks'
 
-function App(props) {
-  const user = userService.getLoggedInUser()
-  if (user) props.setUser(user)
+export default function App() {
+  const [settings] = useSettings()
+  const dispatch = useDispatch()
+  const history = useHistory()
+
+  const appClasses = useMemo(() => {
+    const classes = ['main-layout']
+    if (settings && settings.isDark) classes.push('bp4-dark')
+    return classes
+  }, [settings])
+
+  useEffect(() => {
+    const user = userService.getLoggedInUser()
+    if (user) {
+      dispatch(setUser(user))
+      history.push('/')
+    } else history.push('/signup')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
-    <div className="main-layout">
+    <div className={appClasses.join(' ')}>
       <AppHeader />
       <main className='main-view'>
         <Switch>
           { routes }
         </Switch>
-        { !user && <Redirect to='/signup' /> }
       </main>
     </div>
   );
 }
-
-const mapDispatchToProps = {
-  setUser
-}
-
-export default connect(null, mapDispatchToProps)(App)
