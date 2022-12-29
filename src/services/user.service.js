@@ -10,7 +10,7 @@ function signup(name) {
     coins: DEFAULT_USER_COINS,
     moves: [],
     settings: {
-      theme: 'light'
+      isDark: false
     }
   }
 
@@ -42,6 +42,16 @@ function addMove(contact, amount) {
   return user
 }
 
+function setSettings(settings) {
+  const user = getLoggedInUser()
+  if (user) {
+    user.settings = settings
+    saveUser(user)
+  }
+
+  return user
+}
+
 function saveUser(user) {
   utilService.saveToStorage(STORAGE_KEY, user)
 }
@@ -50,5 +60,6 @@ export const userService = {
   signup,
   getLoggedInUser,
   logout,
-  addMove
+  addMove,
+  setSettings
 }

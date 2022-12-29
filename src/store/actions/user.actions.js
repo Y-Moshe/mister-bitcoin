@@ -34,3 +34,11 @@ export function transferCoins(to, coins) {
     dispatch({ type: ACTIONS.SET_USER, user })
   }
 }
+
+export function setUserSettings(settings) {
+
+  return (dispatch) => {
+    const user = userService.setSettings(settings)
+    dispatch({ type: ACTIONS.SET_USER, user })
+  }
+}
