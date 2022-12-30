@@ -15,7 +15,7 @@ export default function App() {
   const history = useHistory()
 
   const appClasses = useMemo(() => {
-    const classes = ['main-layout']
+    const classes = ['main-layout', 'main-app']
     if (settings && settings.isDark) classes.push('bp4-dark')
     return classes
   }, [settings])
