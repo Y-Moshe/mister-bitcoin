@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { ButtonGroup, Button } from '@blueprintjs/core'
 
-import profileImg from '../assets/img/profile.png'
+import contactImg from '../assets/img/contact.png'
 
 export default function ContactPreview({ contact, onRemove }) {
   const history = useHistory()
@@ -20,7 +20,7 @@ export default function ContactPreview({ contact, onRemove }) {
   return (
     <Link to={'/contact/' + contact._id}>
       <article className='contact-preview'>
-        <img src={profileImg} alt="profile img" className='img-size-56' />
+        <img src={contactImg} alt="contact img" className='img-size-56' />
         <p>{contact.name}</p>
 
         <ButtonGroup>

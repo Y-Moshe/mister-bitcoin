@@ -7,6 +7,7 @@ import { contactService } from '../services/contact.service'
 import TransferFund from '../components/TransferFund'
 import { transferCoins } from '../store/actions/user.actions'
 import MoveList from '../components/MoveList'
+import contactImg from '../assets/img/contact.png'
 
 export default function ContactDetails(props) {
   const [contact, setContact] = useState(null)
@@ -48,7 +49,8 @@ export default function ContactDetails(props) {
 
   return (
     <section style={{ maxWidth: 650, marginInline: 'auto' }}>
-      <div>
+      <div className='text-center'>
+        <img src={contactImg} alt='contact img' className='img-size-256' />
         <pre>
           <h4>Name: {contact.name}</h4>
           <p>E-Mail: {contact.email}</p>
