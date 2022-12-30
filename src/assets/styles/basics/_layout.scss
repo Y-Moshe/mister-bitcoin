@@ -4,15 +4,9 @@
 
 .main-layout {
     display: grid;
-    grid-template-columns: auto minmax(auto, 1280px) auto;
+    grid-template-columns: auto minmax(auto, $layout-max-width) auto;
 
     & > *:not(.full) {
         grid-column: 2;
     }
-}
-
-.take-full-screen {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
 }

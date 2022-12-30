@@ -4,8 +4,8 @@
   gap: 10px;
 
   & .move-preview {
-    background-color: #8ABBFF;
-    .main-app.bp4-dark & { background-color: #404854; }
+    background-color: $move-preview-light-bg;
+    .main-app.bp4-dark & { background-color: $move-preview-dark-bg; }
 
     border-radius: 5px;
     box-shadow: 0 0 0 1px #4C90F0;
