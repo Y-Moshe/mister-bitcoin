@@ -1,22 +1,25 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { FormGroup, InputGroup, Button } from '@blueprintjs/core'
 
 import { signupUser } from '../store/actions/user.actions'
 
-function SignupPage(props) {
+export default function SignupPage() {
+  const dispatch = useDispatch()
+  const history = useHistory()
+
   const [userName, setUserName] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
   const handleChange = ({ target }) => setUserName(target.value)
-
   const handleSubmit = (event) => {
     event.preventDefault()
 
     setIsLoading(true)
     try {
-      props.signupUser(userName)
-      props.history.push('/')
+      dispatch(signupUser(userName))
+      history.push('/')
     } catch (err) {
       console.log(err)
     } finally {
@@ -50,9 +53,3 @@ function SignupPage(props) {
     </section>
   )
 }
-
-const mapDispatchToProps = {
-  signupUser
-}
-
-export default connect(null, mapDispatchToProps)(SignupPage)
