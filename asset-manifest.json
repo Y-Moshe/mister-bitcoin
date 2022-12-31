@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/mister-bitcoin/static/css/main.cc72b074.css",
-    "main.js": "/mister-bitcoin/static/js/main.1464dd35.js",
+    "main.css": "/mister-bitcoin/static/css/main.caae175a.css",
+    "main.js": "/mister-bitcoin/static/js/main.442aa0f7.js",
     "static/js/787.887c022c.chunk.js": "/mister-bitcoin/static/js/787.887c022c.chunk.js",
     "static/media/contact.png": "/mister-bitcoin/static/media/contact.00f4f37bfd63382fd77e.png",
     "static/media/blueprint-icons-20.eot?": "/mister-bitcoin/static/media/blueprint-icons-20.d317d8e9664636080ad2.eot",
@@ -14,12 +14,12 @@
     "static/media/blueprint-icons-20.woff2?": "/mister-bitcoin/static/media/blueprint-icons-20.8bee0c372f0cf4399089.woff2",
     "static/media/blueprint-icons-16.woff2?": "/mister-bitcoin/static/media/blueprint-icons-16.f81c5e3e118a3659abda.woff2",
     "index.html": "/mister-bitcoin/index.html",
-    "main.cc72b074.css.map": "/mister-bitcoin/static/css/main.cc72b074.css.map",
-    "main.1464dd35.js.map": "/mister-bitcoin/static/js/main.1464dd35.js.map",
+    "main.caae175a.css.map": "/mister-bitcoin/static/css/main.caae175a.css.map",
+    "main.442aa0f7.js.map": "/mister-bitcoin/static/js/main.442aa0f7.js.map",
     "787.887c022c.chunk.js.map": "/mister-bitcoin/static/js/787.887c022c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.cc72b074.css",
-    "static/js/main.1464dd35.js"
+    "static/css/main.caae175a.css",
+    "static/js/main.442aa0f7.js"
   ]
 }
