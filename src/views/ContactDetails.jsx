@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Spinner, Button, ButtonGroup, Alert } from '@blueprintjs/core'
 
 import { contactService } from '../services/contact.service'
@@ -9,22 +9,23 @@ import { transferCoins } from '../store/actions/user.actions'
 import MoveList from '../components/MoveList'
 import contactImg from '../assets/img/contact.png'
 
-export default function ContactDetails(props) {
+export default function ContactDetails() {
   const [contact, setContact] = useState(null)
   const [isAlertOpen, setIsAlertOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const { loggedInUser } = useSelector(({ userModule }) => userModule)
   const dispatch = useDispatch()
+  const params = useParams()
+  const navigate = useNavigate()
 
   useEffect(() => {
-    loadContact()
+    loadContact(params.id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [params])
 
-  const loadContact = async () => {
-    const id = props.match.params.id
-    const contact = await contactService.getContactById(id)
+  const loadContact = async (contactId) => {
+    const contact = await contactService.getContactById(contactId)
     setContact(contact)
   }
 
@@ -32,7 +33,7 @@ export default function ContactDetails(props) {
     setIsLoading(true)
     try {
       await contactService.deleteContact(contact._id)
-      props.history.replace('/contact') // so going back is not an option!
+      navigate('/contact', { replace: true }) // so going back is not an option!
     } catch (err) {
       console.log(err)
     } finally {

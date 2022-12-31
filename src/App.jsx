@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
-import { Switch, useHistory } from 'react-router-dom'
-import routes from './routes'
+import { Outlet, useNavigate } from 'react-router-dom'
 import './assets/styles/main.scss'
 
 import AppHeader from './components/AppHeader'
@@ -12,7 +11,7 @@ import { useSettings } from './hooks'
 export default function App() {
   const [settings] = useSettings()
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const appClasses = useMemo(() => {
     const classes = ['main-layout', 'main-app']
@@ -24,8 +23,8 @@ export default function App() {
     const user = userService.getLoggedInUser()
     if (user) {
       dispatch(setUser(user))
-      history.push('/')
-    } else history.push('/signup')
+      navigate('/')
+    } else navigate('/signup')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -33,9 +32,7 @@ export default function App() {
     <div className={appClasses.join(' ')}>
       <AppHeader />
       <main className='main-view'>
-        <Switch>
-          { routes }
-        </Switch>
+        <Outlet />
       </main>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { FormGroup, InputGroup, Button } from '@blueprintjs/core'
 
@@ -7,7 +7,7 @@ import { signupUser } from '../store/actions/user.actions'
 
 export default function SignupPage() {
   const dispatch = useDispatch()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const [userName, setUserName] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -19,7 +19,7 @@ export default function SignupPage() {
     setIsLoading(true)
     try {
       dispatch(signupUser(userName))
-      history.push('/')
+      navigate('/')
     } catch (err) {
       console.log(err)
     } finally {

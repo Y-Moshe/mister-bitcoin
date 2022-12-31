@@ -1,11 +1,11 @@
 import React from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ButtonGroup, Button } from '@blueprintjs/core'
 
 import contactImg from '../assets/img/contact.png'
 
 export default function ContactPreview({ contact, onRemove }) {
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const handleDelete = (event) => {
     event.preventDefault()
@@ -14,7 +14,7 @@ export default function ContactPreview({ contact, onRemove }) {
   
   const goToEdit = (event) => {
     event.preventDefault()
-    history.push(`/contact/edit/${contact._id}`)
+    navigate(`/contact/edit/${contact._id}`)
   }
 
   return (

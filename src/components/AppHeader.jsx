@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useHistory, useLocation } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import {
   Navbar, NavbarGroup, Alignment,
   Button, Position, Menu,
@@ -33,7 +33,7 @@ const links = [
 
 export default function AppHeader() {
   const location = useLocation()
-  const history = useHistory()
+  const navigate = useNavigate()
   const { loggedInUser } = useSelector(({ userModule }) => userModule)
   const dispatch = useDispatch()
 
@@ -45,7 +45,7 @@ export default function AppHeader() {
 
   const handleLogout = () => {
     dispatch(logoutUser())
-    history.replace('/signup')
+    navigate('/signup', { replace: true })
   }
 
   const isNavActive = (path) => {
@@ -92,7 +92,7 @@ export default function AppHeader() {
             content={UserNav({
               userName,
               isDark,
-              history,
+              navigate,
               onDarkModeChange: handleDarkModeChange,
               onLogout: handleLogout,
               isNavActive
@@ -106,7 +106,7 @@ export default function AppHeader() {
   )
 }
 
-function UserNav({ userName, isDark, onDarkModeChange, history, isNavActive, onLogout }) {
+function UserNav({ userName, isDark, onDarkModeChange, navigate, isNavActive, onLogout }) {
   const darkIcon = <Icon icon='contrast' color={isDark ? 'darkblue' : 'gold'} />
   const darkSwitch = <Switch checked={isDark} onChange={onDarkModeChange} className={Classes.FOCUS_DISABLED + ' m-0'} />
 
@@ -121,7 +121,7 @@ function UserNav({ userName, isDark, onDarkModeChange, history, isNavActive, onL
                 minimal fill
                 icon={link.icon}
                 text={link.text}
-                onClick={() => history.push(link.href)}
+                onClick={() => navigate(link.href)}
                 active={isNavActive(link.href)}
               />
             }>
@@ -131,7 +131,7 @@ function UserNav({ userName, isDark, onDarkModeChange, history, isNavActive, onL
         <MenuDivider />
       </MediaQuery>
 
-      <MenuItem icon='user' text={userName} onClick={() => history.push('/home')} />
+      <MenuItem icon='user' text={userName} onClick={() => navigate('/home')} />
       <MenuItem icon={darkIcon} text={darkSwitch} />
       <MenuDivider />
       <MenuItem icon='log-out' text='Log-out' intent='danger' onClick={onLogout} />

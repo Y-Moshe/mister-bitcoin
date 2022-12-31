@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import moment from 'moment'
 import { Icon } from '@blueprintjs/core'
@@ -42,7 +42,7 @@ export default function HomePage() {
     })
   }
 
-  if (!loggedInUser) return <Redirect to='/signup' />
+  if (!loggedInUser) return <Navigate to='/signup' />
 
   const last3Moves = loggedInUser.moves.slice(0, 3)
 

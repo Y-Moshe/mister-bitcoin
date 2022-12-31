@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { FormGroup, InputGroup, Button } from '@blueprintjs/core'
 
 import { contactService } from '../services/contact.service'
 
-export default function ContactEdit(props) {
+export default function ContactEdit() {
   const [contact, setContact] = useState(contactService.getEmptyContact())
   const [isLoading, setIsLoading] = useState(false)
-  const contactId = props.match.params.id
+  const navigate = useNavigate()
+  const params = useParams()
 
   useEffect(() => {
-    contactId && loadContact()
+    const contactId = params.id
+    contactId && loadContact(contactId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [params])
 
-  const loadContact = async () => {
+  const loadContact = async (contactId) => {
     setIsLoading(true)
     try {
       const contact = await contactService.getContactById(contactId)
@@ -40,7 +42,7 @@ export default function ContactEdit(props) {
     setIsLoading(true)
     try {
       await contactService.saveContact(contact)
-      props.history.push('/contact')
+      navigate('/contact')
     } catch (err) {
       console.log(err)
     } finally {
