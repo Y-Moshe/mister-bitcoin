@@ -1,16 +1,19 @@
 import React from 'react'
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import ContactPreview from './ContactPreview'
 
 export default function ContactList({ contacts, children, onRemove }) {
   const contactList = contacts.map(contact => (
-    <li key={contact._id}>
-      <ContactPreview contact={contact} onRemove={onRemove} />
-    </li>
+    <CSSTransition classNames='slide-in' key={contact._id} timeout={500}>
+      <li><ContactPreview contact={contact} onRemove={onRemove} /></li>
+    </CSSTransition>
   ))
   return (
     <ul className='clean-list'>
-      { children }
-      { contactList }
+      {children}
+      <TransitionGroup>
+        {contactList}
+      </TransitionGroup>
     </ul>
   )
 }
