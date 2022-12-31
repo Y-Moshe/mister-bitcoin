@@ -35,10 +35,14 @@ export default function Chart({ title, description, data, color, type }) {
           width={size.width}
           height={size.height}
           data={data}>
-          <XAxis dataKey="month" />
-          <YAxis dataKey="BIT" />
-          <Tooltip formatter={(value, name) => [`${value.toFixed(7)}`, name]} animationEasing='ease-out' />
-          <Line type="monotone" dataKey="BIT" stroke={color} />
+          <XAxis dataKey="month" stroke={color} />
+          <YAxis dataKey="BIT" stroke={color} />
+          <Line type="monotone" dataKey="BIT" stroke='#D1980B' color='#FBD065' />
+          <Tooltip
+            contentStyle={{ color: 'black' }}
+            formatter={(value, name) => [`${value.toFixed(7)}`, name]}
+            animationEasing='ease-out'
+          />
         </LineChart>
       )
       break;
@@ -48,12 +52,12 @@ export default function Chart({ title, description, data, color, type }) {
           width={size.width}
           height={size.height}
           data={data}>
-          <XAxis dataKey="month" angle={-45} tickMargin={15} height={50} />
-          <YAxis dataKey="USD" />
+          <XAxis dataKey="month" angle={-45} tickMargin={15} height={50} stroke={color} />
+          <YAxis dataKey="USD" stroke={color} />
           <Tooltip content={CustomTooltip} animationEasing='linear' />
-          <Area type="monotone" dataKey="USD" fill="#8884d8" stroke="#8884d8" />
-          <Bar dataKey="USD" barSize={20} fill="#413ea0" />
-          <Line type="monotone" dataKey="USD" stroke="#ff7300" />
+          <Area type="monotone" dataKey="USD" fill="#7AE1D8" />
+          <Bar dataKey="USD" barSize={20} fill="#004D46" />
+          <Line type="monotone" dataKey="USD" stroke="#147EB3" />
         </ComposedChart>
       )
       break;
@@ -63,14 +67,15 @@ export default function Chart({ title, description, data, color, type }) {
           width={size.width}
           height={size.height}
           data={data}>
-          <XAxis dataKey="month" />
-          <YAxis dataKey="coins" />
+          <XAxis dataKey="month" stroke={color} />
+          <YAxis dataKey="coins" stroke={color} />
           <Tooltip
+            contentStyle={{ color: 'black' }}
             labelFormatter={(_, data) => data[0]?.payload?.contactName || ''}
             formatter={(value, name) => [`${value.toFixed(2)}`, name.charAt(0).toUpperCase() + name.slice(1)]}
             animationEasing='ease-out'
           />
-          <Line type="monotone" dataKey="coins" stroke={color} />
+          <Line type="monotone" dataKey="coins" stroke='#8E292C' color='#FA999C' />
         </LineChart>
       )
       break;

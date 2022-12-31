@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import moment from 'moment'
@@ -8,9 +8,15 @@ import { bitcoinService } from '../services/bitcoin.service'
 import profileImg from '../assets/img/profile.png'
 import MoveList from '../components/MoveList'
 import Chart from '../components/Chart'
+import { useSettings } from '../hooks'
 
-export default function HomePage(props) {
+export default function HomePage() {
   const [BTCRate, setBTCRate] = useState(0)
+  const [settings] = useSettings()
+
+  const chartColor = useMemo(() => {
+    return settings?.isDark ? '#E5E8EB' : '#404854'
+  }, [settings])
 
   const { loggedInUser } = useSelector(({ userModule }) => userModule)
 
@@ -52,6 +58,7 @@ export default function HomePage(props) {
       <Chart
         title='Your transfers'
         type='transfers'
+        color={chartColor}
         data={getTransfersChartData()}
       />
     </div>
